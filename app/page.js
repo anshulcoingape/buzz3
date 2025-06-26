@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className='homepage'>
  <Menu></Menu>
-<section className="buzz-hero ">
+<section className="buzz-hero  hellotesting">
     
     <div className="buzz-hero-inner text-center relative">
         <div className="title-content relative relative">

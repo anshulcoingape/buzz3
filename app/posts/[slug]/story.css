@@ -1,0 +1,14 @@
+.story-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.story-slide {
+  scroll-snap-align: start;
+  height: 100vh;
+  padding: 3rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+  overflow-y: auto;
+}

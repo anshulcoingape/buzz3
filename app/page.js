@@ -1,0 +1,263 @@
+"use client";
+import Image from 'next/image'
+import Menu from './components/menu'
+import { useEffect, useState, useRef, useCallback } from "react";
+import axios from "axios";
+import Link from 'next/link';
+export default function Home() {
+    const [posts, setPosts] = useState([]);
+
+    const fetchPosts = useCallback(async () => {
+    try {
+      const res = await axios.get(
+        `https://coinw2.wpenginepowered.com/wp-json/wp/v2/posts?_embed&per_page=10&page=1`
+      );
+      if (res.data.length === 0) {
+       setPosts([]);
+      } else {
+        setPosts(res.data);
+      }
+    } catch (err) {
+       console.log(err)
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+  console.log(posts)
+
+
+  return (
+    <div className='homepage'>
+ <Menu></Menu>
+<section className="buzz-hero ">
+    
+    <div className="buzz-hero-inner text-center relative">
+        <div className="title-content relative relative">
+        <div className="buzz-hero-bg blur-bg"></div>
+      <h1 className="buzz-hero-title">
+        Track The Buzzing Updates In Web3
+      </h1>
+      <div className="buzz-hero-desc relative mx-auto">
+        Cryptocurrency and blockchain is a rapid moving industry. So we do everything to engage you in this journey.
+<p className="second-bg"></p></div>
+      <div className="buzz-app-btns flex justify-center">
+        <a href="#" className="buzz-app-btn">
+          <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/path16.png" alt="Google Play"/>
+        </a>
+        <a href="#" className="buzz-app-btn">
+          <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/apple-app-store.png" alt="App Store"/>
+        </a>
+      </div>
+</div>
+      <div className="buzz-hero-mockup-wrap relative">
+        
+        <div className="buzz-hero-mockup-glow"></div>
+        <div className="main-image">
+        <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/main-image-1.png" alt="App Mockup" 
+        className="buzz-hero-mockup"/></div>
+      </div>
+    </div>
+    <div className="blur-bg buzzhero-bg"></div>
+  </section>
+
+<section className="buzz-features">
+  <div className="blur-bg feature-bg"></div>
+  <h2 className="buzz-features-title font-bold text-center mt-5 md:mt-3 mb-3 md:mb-5">
+    Your <span className="buzzing">Personal</span> App For
+  </h2>
+  <div className="buzz-features-row flex flex-wrap justify-between w-full">
+
+    <div className="buzz-feature-card left-column row-class-handler flex flex-col items-end">
+      <div className="buzz-feature-icon mb-2">
+        <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/rss-icon.png" alt="Short Crypto Feeds" />
+      </div>
+      <div className="buzz-feature-head font-bold mb-2">Short Crypto Feeds</div>
+      <div className="buzz-feature-desc text-right md:text-right">We cut the clutter &amp; deliver stories in 60 words.</div>
+    </div>
+
+    <div className="buzz-feature-center row-class-handler text-center">
+      <div className="buzz-feature-image-bg"></div>
+      <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/app-center-mockup.png" alt="App Screenshot" className="buzz-feature-mockup" />
+    </div>
+
+    <div className="buzz-feature-card row-class-handler flex flex-col self-end right-column">
+      <div className="buzz-feature-icon mb-2">
+        <img src="https://coinw2.wpenginepowered.com/wp-content/uploads/2025/06/unlock.png" alt="Token Unlocks" />
+      </div>
+      <div className="buzz-feature-head font-bold mb-2">Token Unlocks</div>
+      <div className="buzz-feature-desc">Access detailed info on the next token unlocks.</div>
+    </div>
+
+  </div>
+</section>
+
+
+  <section className="relative py-12 bg-black text-white">
+  {/* Background Blur */}
+  <div className="absolute inset-0 bg-[url('/path/to/blur-bg.jpg')] bg-cover bg-center opacity-10 z-0"></div>
+
+  <div className="relative z-10 max-w-7xl mx-auto px-4">
+    {/* Section Heading */}
+    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
+      Our Latest <span className="text-green-500">Blogs</span>
+    </h2>
+
+    <div className="grid md:grid-cols-2 gap-6">
+      {/* Featured Blog Card */}
+
+       {posts.slice(0, 1).map(post => (
+      <div key={post.id} className="bg-neutral-900 rounded-lg overflow-hidden shadow-md">
+        <Link href={`/news/${post.slug}`} className="block"> 
+        
+        {post._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
+        <img
+          src={post._embedded["wp:featuredmedia"][0].source_url}
+          alt={post.title.rendered}
+          className="w-full h-64 object-cover"
+        />
+      )}
+        
+        </Link>
+        <div className="p-4">
+          <span className="inline-block bg-green-600 text-white text-xs px-2 py-1 rounded mb-2">Jun 6, 2025</span>
+          <h3 className="text-xl font-semibold mb-2">
+           <Link href={`/news/${post.slug}`}  className="hover:underline">
+             {post.title.rendered}
+            </Link>
+          </h3>
+           <p
+                className="text-gray-300 text-sm"
+                dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+              />
+         
+        </div>
+      </div>
+       ))}
+      {/* Blog Headlines List */}
+      <div className="space-y-6">
+       {posts.slice(1, 6).map(post => (
+
+  <div key={post.id} className="flex items-start space-x-4 mb-4">
+    <Link href={`/news/${post.slug}`} className="imgtrxp flex-shrink-0 w-24 h-24">
+      {post._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
+        <img
+          src={post._embedded["wp:featuredmedia"][0].source_url}
+          alt={post.title.rendered}
+          className="w-24 h-24 object-cover rounded"
+        />
+      )}
+    </Link>
+    <div>
+      <h3 className="text-md font-medium">
+        <Link href={`/news/${post.slug}`} className="hover:underline text-white">
+          {post.title.rendered}
+        </Link>
+      </h3>
+    </div>
+  </div>
+))}
+
+      </div>
+    </div>
+
+    {/* See All Link */}
+    <div className="text-center mt-8">
+      <Link href="/stories" className="text-green-500 font-semibold hover:underline">
+        See all
+      </Link>
+    </div>
+  </div>
+</section>
+<section className="buzz-faq-section container-fluid py-5">
+    <h2 className="buzz-faq-title text-3xl md:text-4xl font-bold text-center mb-10   ">
+      Frequently Asked <span className="buzzing">Questions</span>
+    </h2>
+    <div className="buzz-faq-list mx-auto">
+        <div className="border-b">
+      <div className="buzz-faq-item open">
+        <div className="buzz-faq-question flex items-center">
+          <span className="buzz-faq-toggle">–</span>
+          <span className="ms-md-5 ms-4"><strong>What is BUZZ3?</strong></span>
+        </div>
+        <div className="buzz-faq-answer">
+          Cryptocurrency and Blockchain is a rapid moving industry. So we do everything to engage you in this journey.
+        </div>
+      </div>
+</div>
+<div className="border-b">
+      <div className="buzz-faq-item">
+        <div className="buzz-faq-question flex items-center">
+          <span className="buzz-faq-toggle">+</span>
+          <span className="ms-md-5 ms-4"><strong>Is BUZZ3 free to use?</strong></span>
+        </div>
+        <div className="buzz-faq-answer">
+          Yes, you can access all features without any charges.
+        </div>
+      </div>
+</div>
+<div className="border-b">
+      <div className="buzz-faq-item ">
+        <div className="buzz-faq-question flex items-center">
+          <span className="buzz-faq-toggle">+</span>
+          <span className="ms-md-5 ms-4"><strong>Which platforms are supported?</strong></span>
+        </div>
+        <div className="buzz-faq-answer">
+          BUZZ3 is available for Android and iOS, and accessible from web browsers.
+        </div>
+      </div>
+</div>
+      <div className="buzz-faq-item">
+        <div className="buzz-faq-question flex items-center">
+          <span className="buzz-faq-toggle">+</span>
+          <span className="ms-md-5 ms-4"><strong>How often is content updated?</strong></span>
+        </div>
+        <div className="buzz-faq-answer">
+          Our platform brings you the latest crypto updates 24/7, every day.
+        </div>
+      </div>
+    </div>
+  </section>
+<footer className="buzz-footer mt-5 pt-4 pb-3">
+  <div className="footer-handler mt-4">
+    <div className="container gap-3 mb-5">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+       <svg width="59" height="22" viewBox="0 0 59 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.41 4.06H5.22V9.76H7.26C7.56 9.76 7.8 9.58 7.8 9.19V4.48C7.8 4.21 7.71 4.06 7.41 4.06ZM7.86 17.74V13.69C7.86 13.21 7.59 13.06 7.2 13.06H5.22V18.19H7.41C7.77 18.19 7.86 18.07 7.86 17.74ZM11.97 2.89V8.86C11.97 9.94 11.61 10.78 10.47 11.08C11.67 11.14 12.18 12.04 12.18 13V18.64C12.18 21.04 11.28 22 8.79 22H0.9V0.249999H9.39C11.1 0.249999 11.97 1.3 11.97 2.89ZM21.8264 22H17.3564C14.8664 22 13.9664 21.04 13.9664 18.64V0.249999H18.4064V17.71C18.4064 18.04 18.4664 18.19 18.8264 18.19H20.3564C20.7164 18.19 20.7764 18.04 20.7764 17.71V0.249999H25.2164V18.64C25.2164 21.04 24.3164 22 21.8264 22ZM36.8456 0.249999L32.1656 17.95H36.2456L35.4956 22H26.3156L31.2056 4.3H26.6756L27.4256 0.249999H36.8456ZM47.8613 0.249999L43.1813 17.95H47.2613L46.5113 22H37.3313L42.2213 4.3H37.6913L38.4413 0.249999H47.8613ZM49.4555 0.249999H55.0055C57.2255 0.249999 57.9455 1.12 57.9455 3.1V9.13C57.9455 10.12 57.6755 10.93 56.2655 11.05C57.7355 11.05 58.0655 12.04 58.0655 13.21V18.64C58.0655 21.04 57.1655 22 54.6755 22H49.4855L48.7355 17.95H53.0855C53.4755 17.95 53.6855 17.92 53.6855 17.41V13.84C53.6855 13.51 53.6255 13.3 53.1455 13.3H49.8155V9.55H53.0855C53.5655 9.55 53.6855 9.43 53.6855 8.95V4.84C53.6855 4.39 53.5055 4.3 53.1755 4.3H48.7055L49.4555 0.249999Z" fill="white"></path>
+</svg>
+        <ul className="flex flex-wrap gap-4 mb-0 md:ml-3 list-none footerlinks">
+          <li><a href="#">Updates</a></li>
+          <li><a href="#">Token Unlocks</a></li>
+          <li><a href="#">Blogs</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div className="buzz-footer-socials flex gap-3 mt-6 md:mt-5 justify-center">
+     <a href="#" className="buzz-social-link" title="Twitter" target="_blank" rel="noopener">
+         
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.1566 20.6109C20.092 20.7286 19.9971 20.8267 19.8817 20.8951C19.7662 20.9636 19.6346 20.9998 19.5004 21H15.0004C14.8741 21 14.75 20.9681 14.6393 20.9073C14.5287 20.8465 14.4352 20.7587 14.3676 20.6522L10.5716 14.6869L5.05536 20.7544C4.92089 20.8988 4.7349 20.9845 4.53772 20.9927C4.34054 21.0009 4.14805 20.9311 4.002 20.7984C3.85595 20.6657 3.7681 20.4807 3.7575 20.2836C3.74689 20.0866 3.81439 19.8933 3.94536 19.7456L9.7363 13.3706L3.86755 4.15313C3.79527 4.03973 3.75481 3.90898 3.7504 3.77458C3.746 3.64018 3.7778 3.50707 3.8425 3.38918C3.90719 3.27129 4.0024 3.17296 4.11813 3.10449C4.23387 3.03603 4.36589 2.99993 4.50036 3H9.00036C9.12659 3.00004 9.25077 3.03194 9.36139 3.09274C9.472 3.15353 9.56549 3.24127 9.63318 3.34781L13.4291 9.31312L18.9454 3.24562C19.0798 3.10117 19.2658 3.01555 19.463 3.00731C19.6602 2.99907 19.8527 3.06888 19.9987 3.20161C20.1448 3.33435 20.2326 3.51929 20.2432 3.71636C20.2538 3.91343 20.1863 4.10674 20.0554 4.25438L14.2644 10.6247L20.1332 19.8478C20.2051 19.9613 20.2451 20.0919 20.2493 20.2262C20.2534 20.3604 20.2214 20.4933 20.1566 20.6109Z" fill="#86B800"></path>
+</svg>        </a>
+        <a href="#" className="buzz-social-link" title="instagram" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.5 2.25H7.5C6.10807 2.25149 4.77358 2.80509 3.78933 3.78933C2.80509 4.77358 2.25149 6.10807 2.25 7.5V16.5C2.25149 17.8919 2.80509 19.2264 3.78933 20.2107C4.77358 21.1949 6.10807 21.7485 7.5 21.75H16.5C17.8919 21.7485 19.2264 21.1949 20.2107 20.2107C21.1949 19.2264 21.7485 17.8919 21.75 16.5V7.5C21.7485 6.10807 21.1949 4.77358 20.2107 3.78933C19.2264 2.80509 17.8919 2.25149 16.5 2.25ZM12 16.5C11.11 16.5 10.24 16.2361 9.49993 15.7416C8.75991 15.2471 8.18314 14.5443 7.84254 13.7221C7.50195 12.8998 7.41283 11.995 7.58647 11.1221C7.7601 10.2492 8.18868 9.44736 8.81802 8.81802C9.44736 8.18868 10.2492 7.7601 11.1221 7.58647C11.995 7.41283 12.8998 7.50195 13.7221 7.84254C14.5443 8.18314 15.2471 8.75991 15.7416 9.49993C16.2361 10.24 16.5 11.11 16.5 12C16.4988 13.1931 16.0243 14.337 15.1806 15.1806C14.337 16.0243 13.1931 16.4988 12 16.5ZM17.625 7.5C17.4025 7.5 17.185 7.43402 17 7.3104C16.815 7.18679 16.6708 7.01109 16.5856 6.80552C16.5005 6.59995 16.4782 6.37375 16.5216 6.15552C16.565 5.93729 16.6722 5.73684 16.8295 5.5795C16.9868 5.42217 17.1873 5.31502 17.4055 5.27162C17.6238 5.22821 17.85 5.25049 18.0555 5.33564C18.2611 5.42078 18.4368 5.56498 18.5604 5.74998C18.684 5.93499 18.75 6.1525 18.75 6.375C18.75 6.67337 18.6315 6.95952 18.4205 7.1705C18.2095 7.38147 17.9234 7.5 17.625 7.5ZM15 12C15 12.5933 14.8241 13.1734 14.4944 13.6667C14.1648 14.1601 13.6962 14.5446 13.1481 14.7716C12.5999 14.9987 11.9967 15.0581 11.4147 14.9424C10.8328 14.8266 10.2982 14.5409 9.87868 14.1213C9.45912 13.7018 9.1734 13.1672 9.05764 12.5853C8.94189 12.0033 9.0013 11.4001 9.22836 10.8519C9.45542 10.3038 9.83994 9.83524 10.3333 9.50559C10.8266 9.17595 11.4067 9 12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12Z" fill="#86B800"></path>
+</svg>        </a>
+        <a href="#" className="buzz-social-link" title="YouTube" target="_blank" rel="noopener">
+        <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.9684 3.5175C20.8801 3.17189 20.7109 2.85224 20.4747 2.58491C20.2385 2.31758 19.9421 2.11024 19.61 1.98C16.3962 0.738753 11.2812 0.750004 11 0.750004C10.7188 0.750004 5.60375 0.738753 2.39 1.98C2.0579 2.11024 1.76153 2.31758 1.52534 2.58491C1.28915 2.85224 1.1199 3.17189 1.03156 3.5175C0.78875 4.45313 0.5 6.16313 0.5 9C0.5 11.8369 0.78875 13.5469 1.03156 14.4825C1.11977 14.8283 1.28895 15.1481 1.52515 15.4156C1.76136 15.6831 2.0578 15.8906 2.39 16.0209C5.46875 17.2088 10.2875 17.25 10.9381 17.25H11.0619C11.7125 17.25 16.5341 17.2088 19.61 16.0209C19.9422 15.8906 20.2386 15.6831 20.4748 15.4156C20.711 15.1481 20.8802 14.8283 20.9684 14.4825C21.2113 13.545 21.5 11.8369 21.5 9C21.5 6.16313 21.2113 4.45313 20.9684 3.5175ZM14.0553 9.61125L10.3053 12.2363C10.1931 12.3148 10.0616 12.3612 9.92492 12.3703C9.78826 12.3794 9.65172 12.351 9.5301 12.288C9.40847 12.225 9.30642 12.1299 9.23501 12.013C9.1636 11.8962 9.12555 11.762 9.125 11.625V6.375C9.12504 6.2378 9.16271 6.10324 9.23392 5.98597C9.30513 5.86869 9.40714 5.77319 9.52885 5.70987C9.65057 5.64655 9.78732 5.61783 9.92422 5.62683C10.0611 5.63584 10.1929 5.68222 10.3053 5.76094L14.0553 8.38594C14.154 8.45512 14.2345 8.54704 14.2901 8.65393C14.3457 8.76081 14.3747 8.87952 14.3747 9C14.3747 9.12049 14.3457 9.23919 14.2901 9.34608C14.2345 9.45297 14.154 9.54489 14.0553 9.61407V9.61125Z" fill="#86B800"></path>
+</svg>        </a>
+    </div>
+
+    <div className="buzz-footer-meta text-center mt-3 gap-3 md:mt-5  flex justify-center pb-2">
+      © 2025 CoinGape.com. All rights reserved.
+      <a href="#">Terms and Conditions</a> &amp; <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  )
+}
